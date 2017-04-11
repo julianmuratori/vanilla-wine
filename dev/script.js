@@ -34,7 +34,7 @@ wineApp.getStyle = () => {
 			let category = wineApp.returnStyle(selection);
 			$.when(category)
 				.then((results) => {
-					console.log(results);
+					// console.log(results);
 					wineApp.resultsCondense(results);
 			})
 		}
@@ -85,8 +85,40 @@ wineApp.grapeOptions = (resultPairs) => {
 wineApp.grapeChoice = () => {
 	$("#submitButton").on("click", (e) => {
 		e.preventDefault();
-
+		let selection = $('input:checked').attr("id");
+		if (selection === undefined) {
+			alert('Please select a category');
+		} else {
+			let category = wineApp.returnStyle(selection);
+			$.when(category)
+				.then((results) => {
+					let title = results.Books[0].Articles[0].Title;
+					// console.log(title);
+					results = results.Books[0].Articles[0].Content;
+					let combined = [];
+					combined.push(results)
+					combined.push(title);
+					// console.log(combined);
+					let cleanUp = wineApp.removeClutter(combined)
+			})
+		}
 	})
+}
+
+// Some random links that the API adds to the page that are annoying to style needed to be removed.
+wineApp.removeClutter = (combined) => {
+	combined[0] = combined[0].replace(`Related Links:`, "")
+	combined[0] = combined[0].replace(`Shop our most popular ${combined[1]}s`, "")
+	combined[0] = combined[0].replace(`Shop our highest rated ${combined[1]}` , "");
+	combined[0] = combined[0].replace(`Shop for ${combined[1]}`, ``)
+	combined[0] = combined[0].replace(`${combined[1]}`, `<h1 class="grapeTitle">${combined[1]}</h1>`);
+	wineApp.grapeDescription(combined[0]);
+}
+
+// Displays final results on page
+wineApp.grapeDescription = (results) => {
+	$("form").remove();
+	$("main").append(`<p>${results}</p>`).append(`<a href="" class="button">Start over</a>`);
 }
 
 // Controls the button to start from the beginning
