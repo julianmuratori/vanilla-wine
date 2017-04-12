@@ -1,6 +1,40 @@
+body {
+  font-family: "Signika", sans-serif;
+  position: relative;
+  background-color: #f8f8f2; }
+
+form {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-pack: center;
+      justify-content: center;
+  -ms-flex-align: center;
+      align-items: center;
+  -ms-flex-direction: column;
+      flex-direction: column;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap; }
+
+input[type=checkbox] {
+  position: absolute;
+  left: -100px; }
+
+input:checked + label {
+  background: #008891; }
+
+.button {
+  font-size: 16px;
+  border-radius: 3px;
+  color: white;
+  background: #00c3d0;
+  margin: 15px;
+  padding: 15px 40px;
+  text-align: center; }
+
 .wrapper {
   margin: 0 auto;
   width: 80%;
+  height: 100vh;
   display: -ms-flexbox;
   display: flex;
   -ms-flex-pack: center;

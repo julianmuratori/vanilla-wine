@@ -12,11 +12,14 @@ wineApp.init = function () {
 	wineApp.checkBoxHandler();
 };
 
+// Makes sure only one checkbox can be checked at a time
 wineApp.checkBoxHandler = function () {
 	$('input[type="checkbox"]').on('change', function () {
 		$('input[type="checkbox"]').not(this).prop('checked', false);
 	});
 };
+
+wineApp.checkedSelection = function () {};
 
 // Stores initial wine type ids in an array so that if the user clicks "start over"
 // the page can be easily repopulated
@@ -86,7 +89,7 @@ wineApp.grapeOptions = function (resultPairs) {
 	wineApp.form();
 
 	for (var key in resultPairs) {
-		var check = '<input type="checkbox" name="categories" id="' + resultPairs[key] + '"><label for="' + resultPairs[key] + '">' + key + '</label>';
+		var check = '<input type="checkbox" name="categories" id="' + resultPairs[key] + '"><label for="' + resultPairs[key] + '" class="button">' + key + '</label>';
 		$("form").append(check);
 	}
 
@@ -107,12 +110,10 @@ wineApp.grapeChoice = function () {
 			var category = wineApp.returnStyle(selection);
 			$.when(category).then(function (results) {
 				var title = results.Books[0].Articles[0].Title;
-				// console.log(title);
 				results = results.Books[0].Articles[0].Content;
 				var combined = [];
 				combined.push(results);
 				combined.push(title);
-				// console.log(combined);
 				var cleanUp = wineApp.removeClutter(combined);
 			});
 		}
@@ -133,7 +134,7 @@ wineApp.removeClutter = function (combined) {
 // Displays final results on page
 wineApp.grapeDescription = function (results) {
 	$("form").remove();
-	$("main").append('<p>' + results + '</p>').append('<a href="" class="button">Start over</a>');
+	$(".wrapper").append('<p>' + results + '</p>').append('<a href="" class="button">Start over</a>');
 };
 
 // Controls the button to start from the beginning
@@ -172,7 +173,7 @@ wineApp.originalChoices = function (i) {
 
 wineApp.form = function () {
 	$("form").remove();
-	$("main").append('<form class="category">');
+	$(".wrapper").append('<form class="category">');
 };
 
 $(wineApp.init);

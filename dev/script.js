@@ -11,11 +11,16 @@ wineApp.init = function() {
 	wineApp.checkBoxHandler();
 }
 
+// Makes sure only one checkbox can be checked at a time
 wineApp.checkBoxHandler = () => {
 		$('input[type="checkbox"]').on('change', function() {
 	   $('input[type="checkbox"]').not(this).prop('checked', false);
 	})
 };
+
+wineApp.checkedSelection = () => {
+
+}
 
 // Stores initial wine type ids in an array so that if the user clicks "start over"
 // the page can be easily repopulated
@@ -80,7 +85,7 @@ wineApp.grapeOptions = (resultPairs) => {
 	wineApp.form();
 
 		for (let key in resultPairs) {
-			let check = `<input type="checkbox" name="categories" id="${resultPairs[key]}"><label for="${resultPairs[key]}">${key}</label>`;
+			let check = `<input type="checkbox" name="categories" id="${resultPairs[key]}"><label for="${resultPairs[key]}" class="button">${key}</label>`;
 			$("form").append(check);
 		}
 
@@ -102,12 +107,10 @@ wineApp.grapeChoice = () => {
 			$.when(category)
 				.then((results) => {
 					let title = results.Books[0].Articles[0].Title;
-					// console.log(title);
 					results = results.Books[0].Articles[0].Content;
 					let combined = [];
 					combined.push(results)
 					combined.push(title);
-					// console.log(combined);
 					let cleanUp = wineApp.removeClutter(combined)
 			})
 		}
@@ -125,10 +128,11 @@ wineApp.removeClutter = (combined) => {
 	wineApp.grapeDescription(combined[0]);
 }
 
+
 // Displays final results on page
 wineApp.grapeDescription = (results) => {
 	$("form").remove();
-	$("main").append(`<p>${results}</p>`).append(`<a href="" class="button">Start over</a>`);
+	$(".wrapper").append(`<p>${results}</p>`).append(`<a href="" class="button">Start over</a>`);
 }
 
 // Controls the button to start from the beginning
@@ -167,7 +171,7 @@ wineApp.originalChoices = (i) => $.ajax({
 
 wineApp.form = () => {
 	$("form").remove();
-	$("main").append(`<form class="category">`);
+	$(".wrapper").append(`<form class="category">`);
 }
 
 
