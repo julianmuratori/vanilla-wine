@@ -34,7 +34,7 @@ gulp.task('scripts', () => {
 
 gulp.task('watch', function() {
   gulp.watch('./dev/*.js', ['scripts']);
-  gulp.watch('./dev/partials/*.scss', ['styles']);
+  gulp.watch('./dev/*.scss', ['styles']);
   gulp.watch('*.html', reload);
 });
 

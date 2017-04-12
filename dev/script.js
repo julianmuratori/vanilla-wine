@@ -109,6 +109,7 @@ wineApp.grapeChoice = () => {
 wineApp.removeClutter = (combined) => {
 	combined[0] = combined[0].replace(`Related Links:`, "")
 	combined[0] = combined[0].replace(`Shop our most popular ${combined[1]}s`, "")
+	combined[0] = combined[0].replace(`Shop our most popular ${combined[1]}`, "")
 	combined[0] = combined[0].replace(`Shop our highest rated ${combined[1]}` , "");
 	combined[0] = combined[0].replace(`Shop for ${combined[1]}`, ``)
 	combined[0] = combined[0].replace(`${combined[1]}`, `<h1 class="grapeTitle">${combined[1]}</h1>`);
