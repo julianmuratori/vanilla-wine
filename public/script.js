@@ -9,6 +9,13 @@ wineApp.endpoint = 'http://services.wine.com/api/beta2/service.svc/JSON/referenc
 wineApp.init = function () {
 	wineApp.grabInitialIds();
 	wineApp.getStyle();
+	wineApp.checkBoxHandler();
+};
+
+wineApp.checkBoxHandler = function () {
+	$('input[type="checkbox"]').on('change', function () {
+		$('input[type="checkbox"]').not(this).prop('checked', false);
+	});
 };
 
 // Stores initial wine type ids in an array so that if the user clicks "start over"
@@ -79,11 +86,13 @@ wineApp.grapeOptions = function (resultPairs) {
 	wineApp.form();
 
 	for (var key in resultPairs) {
-		$("form").append('<input type="radio" name="categories" id="' + resultPairs[key] + '">' + key);
+		var check = '<input type="checkbox" name="categories" id="' + resultPairs[key] + '"><label for="' + resultPairs[key] + '">' + key + '</label>';
+		$("form").append(check);
 	}
 
 	$("form").append('<input type="submit" id="submitButton" class="button" value="Submit">').append('<input type="submit" id="startOver" class="button" value="Start Over">');
 
+	wineApp.checkBoxHandler();
 	wineApp.startOver();
 	wineApp.grapeChoice();
 };
@@ -140,7 +149,7 @@ wineApp.startOver = function () {
 				// returns.push(results);
 				var names = results.Books[0].Articles[0].Title;
 				var ids = results.Books[0].Articles[0].Id;
-				$("form").prepend('<input type="radio" name="categories" id="' + ids + '" value="' + ids + '">' + names);
+				$("form").prepend('<input type="checkbox" name="categories" id="' + ids + '" value="' + names + '">');
 			});
 		});
 		$("form").append('<input type="submit" id="submitButton" class="button" value="Submit">');
