@@ -5,7 +5,7 @@ const categoryIds = []
 wineApp.apiKey = '2b72bf53d75160535f54fa07986c65dc';
 wineApp.endpoint = 'http://services.wine.com/api/beta2/service.svc/JSON/reference?';
 
-wineApp.init = function() {
+wineApp.init = () => {
 	wineApp.grabInitialIds();
 	wineApp.getStyle();
 	wineApp.checkBoxHandler();
@@ -17,10 +17,6 @@ wineApp.checkBoxHandler = () => {
 	   $('input[type="checkbox"]').not(this).prop('checked', false);
 	})
 };
-
-wineApp.checkedSelection = () => {
-
-}
 
 // Stores initial wine type ids in an array so that if the user clicks "start over"
 // the page can be easily repopulated
@@ -46,7 +42,6 @@ wineApp.getStyle = () => {
 			let category = wineApp.returnStyle(selection);
 			$.when(category)
 				.then((results) => {
-					// console.log(results);
 					wineApp.resultsCondense(results);
 			})
 		}
@@ -56,6 +51,7 @@ wineApp.getStyle = () => {
 // Takes grape names and associated ids and converts them to key-value pairs
 
 wineApp.resultsCondense = (results) => {
+	console.log(results)
 	results = results.Books[1].Articles;
 	let resultsName = results.map((varietals) => varietals.Title);
 	let resultsId = results.map((varietals) => varietals.Id);
@@ -86,10 +82,10 @@ wineApp.grapeOptions = (resultPairs) => {
 
 		for (let key in resultPairs) {
 			let check = `<input type="checkbox" name="categories" id="${resultPairs[key]}"><label for="${resultPairs[key]}" class="button">${key}</label>`;
-			$("form").append(check);
+			$(".options").append(check);
 		}
 
-		$("form").append(`<input type="submit" id="submitButton" class="button" value="Submit">`).append(`<input type="submit" id="startOver" class="button" value="Start Over">`);
+		$(".submit").append(`<input type="submit" id="submitButton" class="button" value="Submit">`).append(`<input type="submit" id="startOver" class="button" value="Start Over">`);
 
 		wineApp.checkBoxHandler();
 		wineApp.startOver();
@@ -111,6 +107,7 @@ wineApp.grapeChoice = () => {
 					let combined = [];
 					combined.push(results)
 					combined.push(title);
+					console.log(combined)
 					let cleanUp = wineApp.removeClutter(combined)
 			})
 		}
@@ -125,13 +122,18 @@ wineApp.removeClutter = (combined) => {
 	combined[0] = combined[0].replace(`Shop our highest rated ${combined[1]}` , "");
 	combined[0] = combined[0].replace(`Shop for ${combined[1]}`, ``)
 	combined[0] = combined[0].replace(`${combined[1]}`, `<h1 class="grapeTitle">${combined[1]}</h1>`);
+	combined[0] = combined[0].replace(`Notable Facts`, `<h2 class="secondHeading">Notable Facts</h2>`);
+	combined[0] = combined[0].replace(`Summing it up`, `<h2 class="secondHeading">Summing It Up</h2>`);
+	combined[0] = combined[0].replace(`Successful Sites:`, `<h2 class="secondHeading">Common Appelations</h2>`);
+	combined[0] = combined[0].replace(`Common Descriptors:`, `<h2 class="secondHeading">Common Descriptors</h2>`);
 	wineApp.grapeDescription(combined[0]);
 }
 
 
 // Displays final results on page
 wineApp.grapeDescription = (results) => {
-	$("form").remove();
+	$(".options").remove();
+	$(".submit").remove();
 	$(".wrapper").append(`<p>${results}</p>`).append(`<a href="" class="button">Start over</a>`);
 }
 
@@ -146,14 +148,15 @@ wineApp.startOver = () => {
 			const choice = wineApp.originalChoices(i)
 				$.when(choice)
 					.then((results) => {
-						// returns.push(results);
 						let names = results.Books[0].Articles[0].Title;
 						let ids = results.Books[0].Articles[0].Id;
-						$("form").prepend(`<input type="checkbox" name="categories" id="${ids}" value="${names}">`)
+						$(".options").append(`<input type="checkbox" name="categories" value="${ids}" id="${ids}" value="${names}">`).append(`<label for=${ids} class="button">${names}</label>`)
+							wineApp.checkBoxHandler();
 					})
 		})
-			$("form").append(`<input type="submit" id="submitButton" class="button" value="Submit">`);
-			wineApp.getStyle();
+			$(".submit").append(`<input type="submit" id="submitButton" class="button" value="Submit">`);
+			// 	wineApp.checkBoxHandler();
+			// wineApp.init();
 	});
 
 }
@@ -170,8 +173,10 @@ wineApp.originalChoices = (i) => $.ajax({
 });
 
 wineApp.form = () => {
-	$("form").remove();
-	$(".wrapper").append(`<form class="category">`);
+	$(".options").remove();
+	$(".submit").remove()
+	$("form").append(`<div class="options">`);
+	$("form").append(`<div class="submit">`);
 }
 
 
