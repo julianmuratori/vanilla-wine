@@ -10,7 +10,7 @@ form {
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	flex-direction: column;
+	// flex-direction: column;
 	flex-wrap: wrap;
 }
 
@@ -34,11 +34,21 @@ input:checked+label {
 	// display: inline-block;
 }
 
+.submitButton {
+	font-size: 16px;
+	border-radius: 3px;
+	color: white;
+	background: #00b1bd;
+	margin: 15px;
+	padding: 15px 40px;
+	text-align: center;
+}
+
 .wrapper {
 	margin: 0 auto;
 	// border: 1px solid black;
 	width: 80%;
-	height: 100vh;
+	// height: 100vh;
 	display: flex;
 	justify-content: center;
 	align-items: center;
