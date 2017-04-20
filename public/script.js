@@ -39,6 +39,7 @@ wineApp.getStyle = function () {
 			alert('Please select a category');
 		} else {
 			console.log(selection);
+			wineApp.loading();
 			var category = wineApp.returnStyle(selection);
 			$.when(category).then(function (results) {
 				wineApp.resultsCondense(results);
@@ -85,13 +86,14 @@ wineApp.returnStyle = function (selection) {
 
 wineApp.grapeOptions = function (resultPairs) {
 	wineApp.form();
+	wineApp.loading();
 
 	for (var key in resultPairs) {
 		var check = '<input type="checkbox" name="categories" id="' + resultPairs[key] + '"><label for="' + resultPairs[key] + '" class="button">' + key + '</label>';
 		$(".options").append(check);
 	}
 
-	$(".submit").append('<input type="submit" id="submitButton" class="button" value="Submit">').append('<input type="submit" id="startOver" class="button" value="Start Over">');
+	$(".submit").append('<input type="submit" id="submitButton" class="submitButton" value="Submit">').append('<input type="submit" id="startOver" class="submitButton" value="Start Over">');
 
 	wineApp.checkBoxHandler();
 	wineApp.startOver();
@@ -119,26 +121,38 @@ wineApp.grapeChoice = function () {
 	});
 };
 
-// Some random links that the API adds to the page that are annoying to style needed to be removed.
+// Some random links and phrases that the API adds to the page that are annoying to style needed to be removed.
 wineApp.removeClutter = function (combined) {
+	console.log(combined[1]);
 	combined[0] = combined[0].replace('Related Links:', "");
 	combined[0] = combined[0].replace('Shop our most popular ' + combined[1] + 's', "");
 	combined[0] = combined[0].replace('Shop our most popular ' + combined[1], "");
 	combined[0] = combined[0].replace('Shop our highest rated ' + combined[1], "");
 	combined[0] = combined[0].replace('Shop for ' + combined[1], '');
-	combined[0] = combined[0].replace('' + combined[1], '<h1 class="grapeTitle">' + combined[1] + '</h1>');
-	combined[0] = combined[0].replace('Notable Facts', '<h2 class="secondHeading">Notable Facts</h2>');
-	combined[0] = combined[0].replace('Summing it up', '<h2 class="secondHeading">Summing It Up</h2>');
-	combined[0] = combined[0].replace('Successful Sites:', '<h2 class="secondHeading">Common Appelations</h2>');
-	combined[0] = combined[0].replace('Common Descriptors:', '<h2 class="secondHeading">Common Descriptors</h2>');
+	combined[0] = combined[0].replace('' + combined[1], '<h2 class="grapeTitle headingStyle">' + combined[1] + '</h2>');
+	combined[0] = combined[0].replace('Notable Facts', '<h3 class="secondHeading headingStyle">Notable Facts</h3>');
+	combined[0] = combined[0].replace('Summing it up', '<h2 class="secondHeading headingStyle">Summing It Up</h2>');
+	combined[0] = combined[0].replace('Successful Sites:', '<h3 class="secondHeading headingStyle">Common Appelations</h3>');
+	combined[0] = combined[0].replace('Common Descriptors:', '<h3 class="secondHeading headingStyle">Common Descriptors</h3>');
+	combined[0] = combined[0].replace("Shop our most popular Pink Bubbles", "");
+	combined[0] = combined[0].replace("Pink Bubbles", "");
+	combined[0] = combined[0].replace("Shop our most popular Rhone Blends", "").replace("Shop our highest rated Rhone Blends", "");
+	combined[0] = combined[0].replace("Champagne and Sparkling Wines", "");
+	combined[0] = combined[0].replace("Bubblese", "");
+	combined[0] = combined[0].replace("Bubbles", "");
 	wineApp.grapeDescription(combined[0]);
 };
 
 // Displays final results on page
 wineApp.grapeDescription = function (results) {
+	// console.log(results);
 	$(".options").remove();
 	$(".submit").remove();
-	$(".wrapper").append('<p>' + results + '</p>').append('<a href="" class="button">Start over</a>');
+	$(".mainWrapper").append('<div class="results">');
+	$(".results").append('<p>' + results + '</p>');
+	$(".mainWrapper").append('<div class="submit">');
+	$(".submit").append('<input type="submit" id="startOver" class="submitButton" value="Start Over">');
+	wineApp.startOver();
 };
 
 // Controls the button to start from the beginning
@@ -146,7 +160,9 @@ wineApp.grapeDescription = function (results) {
 wineApp.startOver = function () {
 	$("#startOver").on("click", function (e) {
 		e.preventDefault();
+		$(".results").remove();
 		wineApp.form();
+		wineApp.loading();
 		var returns = [];
 		var queries = categoryIds.forEach(function (i) {
 			var choice = wineApp.originalChoices(i);
@@ -157,7 +173,7 @@ wineApp.startOver = function () {
 				wineApp.checkBoxHandler();
 			});
 		});
-		$(".submit").append('<input type="submit" id="submitButton" class="button" value="Submit">');
+		$(".submit").append('<input type="submit" id="submitButton" class="submitButton" value="Submit">');
 		// 	wineApp.checkBoxHandler();
 		// wineApp.init();
 	});
@@ -176,11 +192,24 @@ wineApp.originalChoices = function (i) {
 	});
 };
 
+// Removes and adds form options that get repopulated by AJAX calls
 wineApp.form = function () {
 	$(".options").remove();
 	$(".submit").remove();
 	$("form").append('<div class="options">');
 	$("form").append('<div class="submit">');
+};
+
+// Loading Modal
+wineApp.loading = function () {
+	$(document).on({
+		ajaxStart: function ajaxStart() {
+			$("body").addClass("loading");
+		},
+		ajaxStop: function ajaxStop() {
+			$("body").removeClass("loading");
+		}
+	});
 };
 
 $(wineApp.init);

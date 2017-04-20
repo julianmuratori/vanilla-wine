@@ -2,33 +2,55 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>Document</title>
+	<title>The Juice is Loose</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="./public/styles/style.css">
 	<link href="https://fonts.googleapis.com/css?family=Signika" rel="stylesheet">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 </head>
 <body>
-		<div class="wrapper">
+	<header class="wrapper">
+		<div class="title">
+			<h1>The Juice Is Loose</h1>
+			<p>An educational tool for learning about styles of wine and their qualities</p>
+			<p>Made by Julian Muratori using the Wine.com API</p>
+		</div>
+	</header>
+		<div class="wrapper mainWrapper">
 		<form class="category" action="">
 			<div class="options">
 				<input type="checkbox" name="categories" id="124" class="button" value="124">
-					<label for="124" class="button">Red</label>
+					<label for="124" class="button">Red Wine</label>
 				<input type="checkbox" name="categories" id="125" class="button" value="125">
-					<label for="125" class="button">White</label>
+					<label for="125" class="button">White Wine</label>
 				<input type="checkbox" name="categories" id="123" class="button" value=123>
 					<label for="123" class="button">Champagne and Sparkling</label>
 				<input type="checkbox" name="categories" id="126" class="button" value="126">
-					<label for="126" class="button">Rose</label>
+					<label for="126" class="button">Rosé Wine</label>
 				<input type="checkbox" name="categories" id="128" class="button" value="128">
 					<label for="128" class="button">Dessert, Sherry, and Port</label>
 				<input type="checkbox" name="categories" id="134" class="button" value="134">
-					<label for="134" class="button">Sake</label>
+					<label for="134" class="button">Saké</label>
 				</div>
 			<div class="submit">
 					<input type="submit" id="submit" class="submitButton" value="Submit">
 			</div>
 		</form>
+
 		</div>
+
+	<footer class="flex">
+
+	</footer>
+	<div class="modal">
+		<div class="modalAnimation">
+			<div id="img1" class="img"></div>
+			<div id="img2" class="img"></div>
+			<div id="img3" class="img"></div>
+			<div id="img4" class="img"></div>
+			<div id="img5" class="img"></div>
+		</div>
+	</div>
 
 
 <script src="public/script.js"></script>
